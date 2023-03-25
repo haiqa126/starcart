@@ -7,13 +7,13 @@ export const swapApi = createApi({
 	tagTypes: ['Films'],
 	endpoints: builder => ({
 		getFilms: builder.query({
-			query: () => `films/?format=json`,
+			query: page => `films/?format=json&page=${page}`,
 		}),
 		getFilm: builder.query({
 			query: id => `films/${id}?format=json`,
 		}),
 		getCharacters: builder.query({
-			query: () => `people/?format=json`,
+			query: page => `people/?format=json&page=${page}`,
 		}),
 		getCharacter: builder.query({
 			query: id => `people/${id}?format=json`,

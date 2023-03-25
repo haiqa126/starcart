@@ -21,14 +21,30 @@ export const cartSlice = createSlice({
 	initialState,
 	reducer: {
 		addItem: (state, action) => {
-			// create item
-			// add item to items
+			const item = createItem(action.payload)
+			state.items.push(item)
+			state.total += state.prices[item.type]
 		},
 		removeItem: (state, action) => {
-			// find fave
-			// remove fave
+			const itemId = action.payload
+			const itemIndex = state.items.findIndex(item => item.id === itemId)
+			if (itemIndex >= 0) {
+				const item = state.items[itemIndex]
+				state.items.splice(itemIndex, 1)
+				state.total -= state.prices[item.type]
+			}
+		},
+		editItem: (state, action) => {
+			const itemId = action.payload.id
+			const itemIndex = state.items.findIndex(item => item.id === itemId)
+			if (itemIndex >= 0) {
+				const oldItem = state.items[itemIndex]
+				const newItem = { ...oldItem, ...action.payload }
+				state.items[itemIndex] = newItem
+				state.total += state.prices[newItem.type] - state.prices[oldItem.type]
+			}
 		},
 	},
 })
 
-export const { addItem, removeItem } = cartSlice
+export const { addItem, removeItem, editItem } = cartSlice.actions

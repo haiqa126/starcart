@@ -13,9 +13,15 @@ export const favesSlice = createSlice({
 	initialState,
 	reducers: {
 		addFave: (state, action) => {
+			console.log(action.payload)
 			const name = action.payload.name ? action.payload.name : action.payload.title ? action.payload.title : 'no name'
-			const fave = createFave(action.payload, name)
-			state.push(fave)
+			if (!current(state).find(fav => fav.name == name)) {
+				const fave = createFave(action.payload, name)
+				console.log('added')
+				state.push(fave)
+			} else {
+				console.log('duplicate')
+			}
 		},
 		updateFave: (state, action) => {
 			// find fave
@@ -29,13 +35,14 @@ export const favesSlice = createSlice({
 			// return state
 		},
 		removeFave: (state, action) => {
-			// const id = action.payload
-			console.log('faves', current(state))
+			const id = action.payload
+			/* */
+			state = current(state).filter(fave => fave.id !== id)
+
 			/*
-			 ! remove fave code here */
-			/*
+            
 			 * make sure to return the whole state because it's just a single array of faves */
-			// return state.???
+			return state
 		},
 	},
 })
